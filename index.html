@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+	<body>
+
+		<h1>Prime Shuffle (beta)</h1>
+
+		<p>Click to generate link</p>
+		<select id="forwhom">
+			<option selected="selected" disabled="disabled">Who are you buying for?</option>
+			<option value="dad">Dad</option>
+			<option value="mom">Mom</option>
+			<option value="brother_young">Younger Brother</option>
+			<option value="brother_older">Older Brother</option>
+			<option value="sister_young">Younger Sister</option>
+			<option value="grandpa">Grandfather</option>
+			<option value="grandma">Grandmother</option>
+			<option value="uncle">Uncle</option>
+			<option value="aunt">Aunt</option>					
+			<option value="gf">Girlfriend</option>					
+			<option value="bf">Boyfriend</option>
+			<option value="worst_enemy">Your Worst Enemy</option>
+			<option value="uncle_rich">Rich Uncle</option>						
+		</select>
+
+
+
+		<button type="button" onclick="printToPage()">Shuffle</button>
+		<a id="demo"></a>
+		<iframe id="myFrame" height="200" width="200" src="about: blank">
+  			<p>Your browser does not support iframes.</p>
+		</iframe>
+
+		<script>
+
+		var items = ["Vinyl Record","XBOX One Game","Blu-Ray Box Set","Bagel Maker","Lego Playset"];
+		var dad_items = ["tools","bbq","sports memorabilia"]
+		var mom_items = ["perfume","cooking utensils"]
+		var brother_items = []
+
+		//window.onload = function() { //this makes the first element of the dropdown menu blank
+		//	document.getElementById("forwhom").selectedIndex = -1;
+		//}
+
+		function printToPage() {
+			var randIndex = Math.floor(Math.random()*items.length);
+			var siteRef = "www.amazon.com/" + items[randIndex].replace(/ /g,"");
+    		document.getElementById("demo").innerHTML = items[randIndex];
+			document.getElementById("demo").href = siteRef;
+			document.getElementById("myFrame").src = siteRef;
+		}
+		</script>
+	</body>
+</html> 
