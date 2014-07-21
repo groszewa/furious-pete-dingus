@@ -13,4 +13,8 @@ REVISIONS:
 -added support directory (there is a .css file for a price slider in there now)
 -added dropdown menu for family members
 
+Alex 7/20/2014:
+-Added twitter bootstrap framework
+-Created slider and centered items
+-button now fetches real (hard-coded) links and images
 

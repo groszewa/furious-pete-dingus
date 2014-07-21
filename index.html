@@ -1,53 +1,56 @@
 <!DOCTYPE html>
 <html>
+<head>
+	<title>Prime Shuffle (beta) </title>
+	<link href ="bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
+	<link href ="bootstrap/slider/css/slider.css" rel="stylesheet" media="screen">	
+</head>
 	<body>
 
-		<h1>Prime Shuffle (beta)</h1>
+		<h1 class="text-center">Prime Shuffle (beta)</h1>
 
-		<p>Click to generate link</p>
-		<select id="forwhom">
-			<option selected="selected" disabled="disabled">Who are you buying for?</option>
-			<option value="dad">Dad</option>
-			<option value="mom">Mom</option>
-			<option value="brother_young">Younger Brother</option>
-			<option value="brother_older">Older Brother</option>
-			<option value="sister_young">Younger Sister</option>
-			<option value="grandpa">Grandfather</option>
-			<option value="grandma">Grandmother</option>
-			<option value="uncle">Uncle</option>
-			<option value="aunt">Aunt</option>					
-			<option value="gf">Girlfriend</option>					
-			<option value="bf">Boyfriend</option>
-			<option value="worst_enemy">Your Worst Enemy</option>
-			<option value="uncle_rich">Rich Uncle</option>						
-		</select>
+		<div class="text-center">
+			<select id="forwhom" class="span3">
+				<option selected="selected" disabled="disabled">Who are you buying for?</option>
+				<option value="dad">Dad</option>
+				<option value="mom">Mom</option>
+				<option value="brother_young">Younger Brother</option>
+				<option value="brother_older">Older Brother</option>
+				<option value="sister_young">Younger Sister</option>
+				<option value="grandpa">Grandfather</option>
+				<option value="grandma">Grandmother</option>
+				<option value="uncle">Uncle</option>
+				<option value="aunt">Aunt</option>					
+				<option value="gf">Girlfriend</option>					
+				<option value="bf">Boyfriend</option>
+				<option value="worst_enemy">Your Worst Enemy</option>
+				<option value="uncle_rich">Rich Uncle</option>						
+			</select>
+		</div>
 
+		<div class="text-center">
+			What is your price range?: <b>$ 0</b> <input id="price_range" type="text" class="span2" value="" data-slider-min="0" data-slider-max="1000" data-slider-step="5" data-slider-value="[250,450]"/> <b>$ 1000</b>
+		</div>
 
+		<p class="text-center">Click to generate link</p>
+		<div class="text-center">
+			<button class="btn btn-large btn-primary" type="button" onclick="printToPage()">Shuffle</button>
+		</div>
 
-		<button type="button" onclick="printToPage()">Shuffle</button>
-		<a id="demo"></a>
-		<iframe id="myFrame" height="200" width="200" src="about: blank">
-  			<p>Your browser does not support iframes.</p>
-		</iframe>
+		<div class="text-center">
+			<a id="demo"></a>
+		</div>
 
-		<script>
+		<div class="text-center">
+			<img id="demo_img" height="100" width="100">
+		</div>
 
-		var items = ["Vinyl Record","XBOX One Game","Blu-Ray Box Set","Bagel Maker","Lego Playset"];
-		var dad_items = ["tools","bbq","sports memorabilia"]
-		var mom_items = ["perfume","cooking utensils"]
-		var brother_items = []
-
-		//window.onload = function() { //this makes the first element of the dropdown menu blank
-		//	document.getElementById("forwhom").selectedIndex = -1;
-		//}
-
-		function printToPage() {
-			var randIndex = Math.floor(Math.random()*items.length);
-			var siteRef = "www.amazon.com/" + items[randIndex].replace(/ /g,"");
-    		document.getElementById("demo").innerHTML = items[randIndex];
-			document.getElementById("demo").href = siteRef;
-			document.getElementById("myFrame").src = siteRef;
-		}
+		<script src="http://code.jquery.com/jquery.js"></script>
+		<script src="bootstrap/js/bootstrap.min.js"></script>
+		<script src="bootstrap/slider/js/bootstrap-slider.js"></script>		
+		<script src = "js/printToPage.js"></script>
+		<script type="text/javascript">
+			$("#price_range").slider({});
 		</script>
 	</body>
 </html> 
