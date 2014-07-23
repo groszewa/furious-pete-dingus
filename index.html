@@ -15,10 +15,11 @@
 			body {
 				padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
 			}
+
+
 		</style>
 
 		<link href ="bootstrap/css/bootstrap-responsive.css" rel="stylesheet" media="screen">
-		<link href ="bootstrap/slider/css/slider.css" rel="stylesheet" media="screen">	
 
 		<link rel="icon" href="favicon.ico" type="image/x-icon" />
 		<link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
@@ -54,9 +55,10 @@
 
 		<h1 class="text-center">Prime Shuffle (beta)</h1>
 
-		<div class="text-center">
-			<select id="forwhom" class="span3">
-				<option selected="selected" disabled="disabled">Who are you buying for?</option>
+		<div id="params" class="text-center">
+			<b>I am shopping for my </b>
+			<select id="person" class="span2">
+				<option selected="selected" disabled="disabled"></option>
 				<option value="dad">Dad</option>
 				<option value="mom">Mom</option>
 				<option value="brother_young">Younger Brother</option>
@@ -68,14 +70,29 @@
 				<option value="aunt">Aunt</option>					
 				<option value="gf">Girlfriend</option>					
 				<option value="bf">Boyfriend</option>
-				<option value="worst_enemy">Your Worst Enemy</option>
+				<option value="worst_enemy">Worst Enemy</option>
 				<option value="uncle_rich">Rich Uncle</option>						
 			</select>
+			 <b>and I want to pay </b>
+			<div class="input-prepend" >
+				<span class="add-on">$</span>
+				<select id="price_range" class="span2">
+					<option selected="selected" disabled="disabled"></option>
+					<option value="zero">0-10</option>
+					<option value="ten">10-25</option>
+					<option value="twenty_five">25-50</option>
+					<option value="fifty">50-100</option>
+					<option value="one_hundred">100-200</option>
+					<option value="two_hundred">200-300</option>
+					<option value="three_hundred">300-400</option>
+					<option value="four_hundred">400-500</option>
+					<option value="five_hundred">500+</option>										
+				</select>
+			</div>
 		</div>
 
-		<div class="text-center">
-			What is your price range?: <b>$ 0</b> <input id="price_range" type="text" class="span2" value="" data-slider-min="0" data-slider-max="1000" data-slider-step="5" data-slider-value="[250,450]"/> <b>$ 1000</b>
-		</div>
+
+
 
 		<p class="text-center">Click to generate link</p>
 		<div class="text-center">
@@ -103,7 +120,6 @@
 
 		<script src="http://code.jquery.com/jquery.js"></script>
 		<script src="bootstrap/js/bootstrap.min.js"></script>
-		<script src="bootstrap/slider/js/bootstrap-slider.js"></script>		
 		<script src = "js/printToPage.js"></script>
 		<script type="text/javascript">
 			$("#price_range").slider({});
