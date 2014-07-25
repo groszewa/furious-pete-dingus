@@ -55,11 +55,9 @@
 
 		<h1 class="text-center">Prime Shuffle (beta)</h1>
 
-<form method="POST" action="php/test.php">
-
 		<div id="params" class="text-center">
 			<b>I am shopping for my </b>
-			<select id="person" name="person" class="span2">
+			<select id="person" class="span2">
 				<option selected="selected" disabled="disabled"></option>
 				<option value="dad">Dad</option>
 				<option value="mom">Mom</option>
@@ -78,7 +76,7 @@
 			 <b>and I want to pay </b>
 			<div class="input-prepend" >
 				<span class="add-on">$</span>
-				<select id="price_range" name="price_range" class="span2">
+				<select id="price_range" class="span2">
 					<option selected="selected" disabled="disabled"></option>
 					<option value="zero">0-10</option>
 					<option value="ten">10-25</option>
@@ -100,12 +98,6 @@
 		<div class="text-center">
 			<button class="btn btn-large btn-primary" type="button" onclick="printToPage()">Shuffle</button>
 		</div>
-
-		<div class="text-center">
-				<input type="submit" value="The Button">
-		
-		</div>
-</form>
 
 		<div class="text-center">
 			<a id="demo"></a>
@@ -133,6 +125,18 @@
 			$("#price_range").slider({});
 		</script>
 
+		<script type="text/javascript">
+
+			width = screen.width;
+			height = screen.height;
+
+			if (width > 0 && height >0) {
+   				 window.location.href = "http://localhost/php_files/test.php?width=" + width + "&height=" + height;
+			} 
+			else 
+    			exit();
+
+		</script>
 
 	</body>
 </html> 
