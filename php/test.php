@@ -4,6 +4,15 @@ echo "Range: {$_POST['price_range']}<br />";
 
 $name = htmlspecialchars($_POST['person']);
 $range = htmlspecialchars($_POST['price_range']);
+
+$lines = file(".crit.txt");
+$input_array = array_slice($lines,0,3);
+
+$aws = $input_array[0];
+$sc = $input_array[1];
+$ass = $input_array[2];
+
+
 //echo $range;
 $min=0;
 $max=0;
