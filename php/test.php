@@ -52,9 +52,18 @@ switch ($range) {
 
 }
 
-echo "Min val: {$min} <br />";
-echo "Max val: {$max}";
+//echo "Min val: {$min} <br />";
+//echo "Max val: {$max}";
 
+//hard coded array values
+$dad = array();
+$mom = array();
+$brother = array();
+$sister = array();
+$gf = array();
+$bf = array();
+$enemy = array();
+$rich = array();
 
 
 

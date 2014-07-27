@@ -1,7 +1,7 @@
 <?php
 //Enter your IDs
-define("Access_Key_ID", "AKIAJGQHTY3M674DX2NQ");
-define("Associate_tag", "gooenogif-20");
+define("Access_Key_ID", "[Access Key ID]");
+define("Associate_tag", "[associate tag]");
 //Set up the operation in the request
 function ItemSearch($SearchIndex, $Keywords){
 //Set the values for some of the parameters
@@ -30,4 +30,4 @@ $response = file_get_contents($request);
 $parsed_xml = simplexml_load_string($response);
 printSearchResults($parsed_xml, $SearchIndex);
 }
-?>
+?>

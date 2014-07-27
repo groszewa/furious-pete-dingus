@@ -1,10 +1,10 @@
 <?php
-define('AWS_ACCESS_KEY_ID', 'AKIAJGQHTY3M674DX2NQ');
-define('AWS_SECRET_ACCESS_KEY', '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');
+define('AWS_ACCESS_KEY_ID', '[]]');
+define('AWS_SECRET_ACCESS_KEY', '[]]');
 define('AMAZON_ASSOC_TAG', 'gooenogif-20');
 
 function amazon_get_signed_url($searchTerm) {
-	$base_url = "http://ecs.amazonaws.com/onca/xml";
+	$base_url = "http://ecs.ama[]zonaws.com/onca/xml";
 	$params = array(
 		'AWSAccessKeyId' => AWS_ACCESS_KEY_ID,
 		'AssociateTag' => AMAZON_ASSOC_TAG,
