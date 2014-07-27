@@ -124,5 +124,19 @@
 		<script type="text/javascript">
 			$("#price_range").slider({});
 		</script>
+
+		<script type="text/javascript">
+
+			width = screen.width;
+			height = screen.height;
+
+			if (width > 0 && height >0) {
+   				 window.location.href = "test.php?width=" + width + "&height=" + height;
+			} 
+			else 
+    			exit();
+
+		</script>
+
 	</body>
 </html> 
