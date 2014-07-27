@@ -12,12 +12,16 @@ function amazon_get_signed_url($searchTerm) {
 		'Operation' => "ItemSearch",
 		'Service' => "AWSECommerceService",
 		'Availability' => "Available",
-		'Condition' => "All",
+		'Condition' => "New",
 		'Operation' => "ItemSearch",
+		'MinimumPrice' => "3500",
+		'MaximumPrice' => "7500",
+		'MerchantId' => "Amazon",
+		'ItemPage' => "1",
 		'SearchIndex' => 'Music', //Change search index if required, you can also accept it as a parameter for the current method like $searchTerm
 		'Keywords' => $searchTerm);
 
-		//'ItemPage'=>"1",
+
 		//'ResponseGroup'=>"Images,ItemAttributes,EditorialReview",
 	
 	if(empty($params['AssociateTag'])) {
@@ -48,32 +52,10 @@ function amazon_get_signed_url($searchTerm) {
 	return ($url);
 }
 
-
-$searchTerm = $_REQUEST['searchTerm'];
-$url = amazon_get_signed_url($searchTerm);
+$url = amazon_get_signed_url("radiohead");
 
 //Below is just sample request dispatch and response parsing for example purposes.
+echo $url;
 
-$response = file_get_contents($url);
-$parsed_xml = simplexml_load_string($response);
 
-$result = array();
-
-foreach($parsed_xml->Items->Item as $current){
-	if($current->ItemAttributes->ProductGroup == 'Music') {
-		$item = array(
-			'track_id' => implode(((array)$current->ASIN), ', '),
-			'source' => 1,
-			'track_name' => implode(((array)$current->ItemAttributes->Title), ', '),
-			'track_url' => implode(((array)$current->DetailPageURL), ', '),
-			'artist_name' => implode(((array)$current->ItemAttributes->Artist), ', '),
-			'artist_url' => '',
-			'collection_name' => '',
-			'collection_url' => '',
-			'genre' => '',
-			);
-		
-		$result[] = $item;
-	}
-}
 ?>
