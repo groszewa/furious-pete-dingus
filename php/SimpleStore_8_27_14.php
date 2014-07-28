@@ -3,10 +3,10 @@ include('amazon_scripts.php');
     
 define('AWS_ACCESS_KEY_ID', get_aws_access_key_id());
 define('AWS_SECRET_ACCESS_KEY', get_aws_secret_access_key());
-define('AMAZON_ASSOC_TAG', 'gooenogif-20');
+define('AMAZON_ASSOC_TAG', get_amazon_assoc_tag());
 
 function amazon_get_signed_url($searchTerm) {
-	$base_url = "http://ecs.ama[]zonaws.com/onca/xml";
+	$base_url = "http://ecs.amazonaws.com/onca/xml";
 	$params = array(
 		'AWSAccessKeyId' => AWS_ACCESS_KEY_ID,
 		'AssociateTag' => AMAZON_ASSOC_TAG,
@@ -54,10 +54,23 @@ function amazon_get_signed_url($searchTerm) {
 	return ($url);
 }
 
-$url = amazon_get_signed_url("radiohead");
+$request = amazon_get_signed_url("radiohead");
 
-//Below is just sample request dispatch and response parsing for example purposes.
-echo $url;
+//Catch the response in the $response object
+$response = file_get_contents($request);
+
+echo $response;
+
+$parsed_xml = simplexml_load_string($response);
+//printSearchResults($parsed_xml, $SearchIndex);
+
+//Verify a successful request
+foreach($parsed_xml->OperationRequest->Errors->Error as $error){
+    echo "Error code: " . $error->Code . "\r\n";
+    echo $error->Message . "\r\n";
+    echo "\r\n";
+}
+
 
 
 ?>
