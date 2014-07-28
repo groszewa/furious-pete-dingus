@@ -5,12 +5,18 @@ echo "Range: {$_POST['price_range']}<br />";
 $name = htmlspecialchars($_POST['person']);
 $range = htmlspecialchars($_POST['price_range']);
 
-$lines = file(".crit.txt");
-$input_array = array_slice($lines,0,3);
+//$lines = file(".crit.txt");
+//$input_array = array_slice($lines,0,3);
 
-$aws = $input_array[0];
-$sc = $input_array[1];
-$ass = $input_array[2];
+//$aws = $input_array[0];
+//$sc = $input_array[1];
+//$ass = $input_array[2];
+include('../amazon_scripts.php');
+    
+define('AWS_ACCESS_KEY_ID', get_aws_access_key_id());
+define('AWS_SECRET_ACCESS_KEY', get_aws_secret_access_key());
+define('AMAZON_ASSOC_TAG', 'gooenogif-20');
+echo AWS_ACCESS_KEY_ID;
 
 
 //echo $range;
