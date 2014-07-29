@@ -45,4 +45,5 @@ function amazon_get_signed_url($params) {
 	
 	return ($url);
 }
+
 ?>
