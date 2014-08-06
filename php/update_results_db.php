@@ -112,16 +112,16 @@ foreach ($requests as $request) {
                 if (isset($current->ItemAttributes->$entry)) {
                     // print $current->ItemAttributes->$entry . "<br>";
                     // print "Entry = " . $entry . "<br>";
-                    $item_results_array[$entry] = (string)$current->ItemAttributes->$entry;   
+                    $item_results_array[$entry] = $con_search->real_escape_string((string)$current->ItemAttributes->$entry);   
                 }            
             }
             
             if (isset($current->ASIN)) {
-                $item_results_array['ASIN'] = (string)$current->ASIN;
+                $item_results_array['ASIN'] = $con_search->real_escape_string((string)$current->ASIN);
             }
 
             if (isset($current->DetailPageURL)) {
-                $item_results_array['DetailPageURL'] = (string)$current->DetailPageURL;
+                $item_results_array['DetailPageURL'] = $con_search->real_escape_string((string)$current->DetailPageURL);
             }
 
             $item_results_array['LastUpdated'] = date("Y-m-d H:i:s");
