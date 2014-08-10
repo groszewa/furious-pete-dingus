@@ -50,21 +50,18 @@ while($row = $sql_column_names->fetch_array())
 
 $sql_column_names->close();
 
-echo "Hello world <br>";
-
 // Get the values from our table for the item search operation
-$sql_search_values = $con_search->query("SELECT * FROM dad_search_table");
-if (!$sql_search_values) { // add this check.
-    die('Invalid query on line 54: ' . mysql_error());
+$sql_itemsearch_params = $con_search->query("SELECT * FROM dad_search_table");
+if (!$sql_itemsearch_params) { // add this check.
+    die('Unable to get * from table' . mysql_error());
 }
 
 $requests = array();
 
 // Iterate over each row
-while($search_values = $sql_search_values->fetch_array(MYSQL_NUM)){
-    $item_search = array_combine($column_names, $search_values);    // Combine the two arrays (elementName => elementValue)
-    $item_search_filtered = array_filter($item_search);             // Filter out all empty element values
-    $params = $constant_elements + $item_search_filtered;           // Add the constant elements to our array
+while($search_values = $sql_itemsearch_params->fetch_array(MYSQL_NUM)){
+    $params = array_filter(array_combine($column_names, $search_values));    // Combine the two arrays (elementName => elementValue) and filter out all empty key values
+    $params += $constant_elements;           // Add the constant elements to our array
     unset($params['Id']);
     unset($params['DateUpdated']);
     
@@ -102,6 +99,8 @@ foreach ($requests as $request) {
         'Manufacturer' => "",
         'ProductGroup' => "",
         'Title' => "",
+        'Price' => 0,
+        'ImageURL' => "",
         'LastUpdated' => "");
 
     // print_r($results_array);
@@ -122,6 +121,14 @@ foreach ($requests as $request) {
 
             if (isset($current->DetailPageURL)) {
                 $item_results_array['DetailPageURL'] = $con_search->real_escape_string((string)$current->DetailPageURL);
+            }
+            
+            if (isset($current->OfferSummary->LowestNewPrice->Amount)) {
+                $item_results_array['Price'] = $con_search->real_escape_string((string)$current->OfferSummary->LowestNewPrice->Amount);
+            }
+            
+            if (isset($current->MediumImage->URL)) {
+                $item_results_array['ImageURL'] = $con_search->real_escape_string((string)$current->MediumImage->URL);
             }
 
             $item_results_array['LastUpdated'] = date("Y-m-d H:i:s");
