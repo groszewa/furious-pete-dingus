@@ -58,6 +58,8 @@ while($search_values = $sql_itemsearch_params->fetch_array(MYSQL_NUM)){
         print "Total pages = " . $total_pages . "<br>";
     }
     
+    if ($total_pages > 10) $total_pages = 10;
+    
     if ($total_pages > 1) {
         for ($i = 2; $i < $total_pages; $i++) {
             $params['ItemPage'] = $i;
