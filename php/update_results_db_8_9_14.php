@@ -26,6 +26,9 @@ if ($con_search->connect_errno) {
     exit();
 }
 
+// Delete contents of MySQL table
+$con_search->query("TRUNCATE TABLE $results_table") or die("Could not delete table");
+
 // Get the column names from our table
 $column_names = get_php_column_names($con_search, $search_db, $search_table);
 
@@ -35,9 +38,6 @@ if (!$sql_itemsearch_params) { // add this check.
     die('Unable to get * from table ' . $search_table . ' ' . mysql_error());
 }
 
-$requests = array();
-$requests_more_pages = array();
-
 // ------------------- Main Loop ----------------------
 
 while($search_values = $sql_itemsearch_params->fetch_array(MYSQL_NUM)){
@@ -46,7 +46,10 @@ while($search_values = $sql_itemsearch_params->fetch_array(MYSQL_NUM)){
     
     $total_pages = 1;
     
-    $parsed_xml = simplexml_load_string(file_get_contents($request));
+    $response = curl_with_retries($request);
+    //usleep(1000*rand(0,4*100));
+    
+    $parsed_xml = simplexml_load_string($response);
     
     update_results_table($con_search, $results_table, $parsed_xml);
     
@@ -56,10 +59,15 @@ while($search_values = $sql_itemsearch_params->fetch_array(MYSQL_NUM)){
     }
     
     if ($total_pages > 1) {
-        for ($i = 2; $i < floor(0.5*$total_pages)+1; $i++) {
+        for ($i = 2; $i < $total_pages; $i++) {
             $params['ItemPage'] = $i;
-            $request = amazon_get_signed_url($params);
-            $parsed_xml = simplexml_load_string(file_get_contents($request));
+            $request = amazon_get_signed_url($params) or die('Unable to access requested URL!<br>');
+
+            $response = curl_with_retries($request);
+            
+            //usleep(1000*rand(0,4*100));
+                
+            $parsed_xml = simplexml_load_string($response);
             update_results_table($con_search, $results_table, $parsed_xml);
         }
     }   
@@ -70,6 +78,33 @@ while($search_values = $sql_itemsearch_params->fetch_array(MYSQL_NUM)){
 //            FUNCTIONS             //
 //                                  //
 //////////////////////////////////////
+
+function curl_with_retries($url){
+    
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, $url);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER,1);
+    
+    $current_retry = 0;
+    
+    do {
+        $data = curl_exec($ch);
+        //print "\$data = $data <br>";
+         if (FALSE === $data) {
+            print "Error: " . curl_error($ch) . " " . curl_errno($ch) . " Retry attempt number " . $current_retry . "<br>";
+            $retry = true;
+            $current_retry++;
+            usleep(1000*rand(0,4*$current_retry*100));
+        }  
+        else {
+            $retry = false;
+        }
+    } while ($retry == true and $current_retry < 3);
+    
+    curl_close($ch);
+    
+    return $data;
+}
 
 function clean_itemsearch_params($search_values, $column_names){
     $constant_elements = array(
