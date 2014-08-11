@@ -59,28 +59,23 @@
 		<div id="params" class="text-center">
 			<b>I am shopping for my </b>
 			<select id="person" name="person" class="span2">
-				<option selected="selected" disabled="disabled"></option>
-				<option value="dad">Dad</option>
+				<option value="dad" selected="selected">Dad</option>
 				<option value="mom">Mom</option>
-				<option value="brother_young">Younger Brother</option>
-				<option value="brother_older">Older Brother</option>
-				<option value="sister_young">Younger Sister</option>
-				<option value="grandpa">Grandfather</option>
-				<option value="grandma">Grandmother</option>
-				<option value="uncle">Uncle</option>
-				<option value="aunt">Aunt</option>					
+				<option value="brother">Brother</option>
+				<option value="sister">Sister</option>
+				<option value="gpa">Grandfather</option>
+				<option value="gma">Grandmother</option>
 				<option value="gf">Girlfriend</option>					
 				<option value="bf">Boyfriend</option>
-				<option value="worst_enemy">Worst Enemy</option>
-				<option value="uncle_rich">Rich Uncle</option>						
+				<option value="enemy">Worst Enemy</option>
+				<option value="rich">Rich Uncle</option>						
 			</select>
 			 <b>and I want to pay </b>
 			<div class="input-prepend" >
 				<span class="add-on">$</span>
 				<select id="price_range" name="price_range" class="span2">
-					<option selected="selected" disabled="disabled"></option>
 					<option value="zero">0-10</option>
-					<option value="ten">10-25</option>
+					<option value="ten" selected="selected">10-25</option>
 					<option value="twenty_five">25-50</option>
 					<option value="fifty">50-100</option>
 					<option value="one_hundred">100-200</option>
@@ -147,7 +142,7 @@
 			},
 			submitHandler: function(form) {
 				// do other stuff for a valid form
-				$.post('php/test.php', $("#myform").serialize(), function(data) {
+				$.post('php/returnResult.php', $("#myform").serialize(), function(data) {
 					$('#results').html(data);
 				});
 			}
