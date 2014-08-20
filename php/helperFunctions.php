@@ -10,8 +10,8 @@ function createLocalItemList($minval,$maxval,$tableName) {
 
 	//Parameters (hard coded, for now)
 	$rec = $tableName;
-	$min_price = $minval;
-	$max_price = $maxval;
+	$min_price = $minval*100;
+	$max_price = $maxval*100;
 
 	// Create connection
 	$con_search = new mysqli('localhost',$user,$pass,$search_db);
@@ -24,8 +24,8 @@ function createLocalItemList($minval,$maxval,$tableName) {
 
 
 	//Select Proper table and narrow down results
-	$sql_search_values = $con_search->query("SELECT * FROM `$rec` WHERE `Manufacturer`= 'LG'");
-	//$sql_search_values = $con_search->query("SELECT * FROM `$rec` WHERE `Price` >= '$min_price' AND `Price` <= '$max_price'");
+	//$sql_search_values = $con_search->query("SELECT * FROM `$rec` WHERE `Manufacturer`= 'LG'");
+	$sql_search_values = $con_search->query("SELECT * FROM `$rec` WHERE `Price` >= '$min_price' AND `Price` <= '$max_price'");
 
 	if (!$sql_search_values) { // add this check.
 	    die('Invalid query on line 54: ' . mysql_error());
@@ -53,7 +53,7 @@ function getRandomItem($local_table){
 	$price = $item['Price'];
 	echo "<div>";
 	echo "	<a href=" . $item['DetailPageURL'] . ">". $item['Title'] ."</a>";
-	echo "	<img id=" . $item['ImageURL'] . ">";
+	echo "	<img src=" . $item['ImageURL'] . ">";
 	echo "	<p>" . $item['Price']/100 . "</p>";
 	echo "</div>";
 }
