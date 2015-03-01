@@ -52,8 +52,8 @@ function getRandomItem($local_table){
 	$item = $local_table[rand(0,count($local_table)-1)];
 	$price = $item['Price'];
 	echo "<div>";
-	echo "	<a href=" . $item['DetailPageURL'] . ">". $item['Title'] ."</a>";
-	echo "	<img src=" . $item['ImageURL'] . ">";
+	echo "	<a href=" . $item['DetailPageURL'] . ">". $item['Title'] ."</a> <br>";
+	echo "	<img src=" . $item['ImageURL'] . " height='100' width='100'>";
 	echo "	<p>" . $item['Price']/100 . "</p>";
 	echo "</div>";
 }
@@ -76,10 +76,6 @@ function processInputs($name_input,$range_input){
 	    case "twenty_five":
 	        $min=25;
 	        $max=50;
-	        break;
-	    case "fifty":
-	        $min=50;
-	        $max=100;
 	        break;
 	    case "fifty":
 	        $min=50;
