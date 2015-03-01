@@ -53,8 +53,8 @@ function getRandomItem($local_table){
 	$price = $item['Price'];
 	echo "<div>";
 	echo "	<a href=" . $item['DetailPageURL'] . ">". $item['Title'] ."</a> <br>";
-	echo "	<img src=" . $item['ImageURL'] . " height='100' width='100'>";
-	echo "	<p>" . $item['Price']/100 . "</p>";
+	echo "	<a href=" . $item['DetailPageURL'] . ">" . "<img src=" . $item['ImageURL'] . " height='100' width='100'></a>";
+	echo "	<p>$" . $item['Price']/100 . "</p>";
 	echo "</div>";
 }
 

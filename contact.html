@@ -40,12 +40,12 @@
             		<span class="icon-bar"></span>
             		<span class="icon-bar"></span>
           		</button>
-          		<a class="brand" href="#">Gift Roulette</a>
+          		<a class="brand" href="#">Good Enough Gifts</a>
           			<div class="nav-collapse collapse">
             			<ul class="nav">
-              				<li class="active"><a href="index.html">Home</a></li>
+              				<li><a href="index.html">Home</a></li>
               				<li><a href="about.html">About</a></li>
-              				<li><a href="contact.html">Contact</a></li>
+              				<li class="active"><a href="contact.html">Contact</a></li>
             			</ul>
          			 </div>
         		</div>
@@ -53,15 +53,13 @@
     	</div>
 
 
-		<h1 class="text-center">Good Enough Gifts</h1>
+		<h1 class="text-center">Contact Us</h1>
 
-		<h3 class="text-center">Contact page</h3>
 
 	<center>
 	<form action="php/contact.php" method="post">
 		<div class="form-group">
-    		<label for="input_name">Email address</label>
-    		Name<br>
+    		<label for="input_name">Name</label>
     		<input type="text" class="form-control" id="input_name" name="input_name" placeholder="Enter name">
   		</div>		
  		<div class="form-group">
@@ -69,7 +67,7 @@
     		<input type="email" class="form-control" id="input_email" name="input_email" placeholder="Enter email">
   		</div>
   		Message<br>
-  		<textarea class="form-control" name="input_message" rows="3"></textarea>
+  		<textarea class="form-control" name="input_message" id="input_message" rows="3"></textarea>
   		<div class="form-group">
     		<div class="col-sm-offset-2 col-sm-10">
       			<button name="submit" type="submit" class="btn btn-default">Submit</button>
