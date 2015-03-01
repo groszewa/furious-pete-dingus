@@ -4,9 +4,9 @@ function createLocalItemList($minval,$maxval,$tableName) {
 
 
 
-	$user = 'root';
-	$pass = '';
-	$search_db = 'item_search_db';
+	$user = 'goodeno4_groszew';
+	$pass = 'Furious-Pete-Dingus2015';
+	$search_db = 'goodeno4_item_search_db';
 
 	//Parameters (hard coded, for now)
 	$rec = $tableName;
