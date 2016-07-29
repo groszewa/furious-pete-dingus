@@ -1,11 +1,20 @@
 <?php
 
 function createLocalItemList($minval,$maxval,$tableName) {
+<<<<<<< HEAD
     
     // Set login parameters
 	$user = 'root';
 	$pass = '';
 	$search_db = 'item_search_db';
+=======
+
+
+
+	$user = 'goodeno4_groszew';
+	$pass = 'Furious-Pete-Dingus2015';
+	$search_db = 'goodeno4_item_search_db';
+>>>>>>> FETCH_HEAD
 
 	//Parameters (hard coded, for now)
 	$rec = $tableName;
@@ -53,6 +62,7 @@ function displayResult($table_name,$item){
 	$price = $item['Price'];
     
 	echo "<div>";
+<<<<<<< HEAD
     // Display link and attach click counter
 	echo "	<a href=" . $item['DetailPageURL'] . " id='product_link'>". $item['Title'] ."</a> <br>";
     
@@ -81,6 +91,11 @@ echo '</script>';
     
 	echo "	<p>" . $item['Price']/100 . "</p>";
     echo "  <p>" . $item['Id'] . "</p>";
+=======
+	echo "	<a href=" . $item['DetailPageURL'] . ">". $item['Title'] ."</a> <br>";
+	echo "	<a href=" . $item['DetailPageURL'] . ">" . "<img src=" . $item['ImageURL'] . " height='100' width='100'></a>";
+	echo "	<p>$" . $item['Price']/100 . "</p>";
+>>>>>>> FETCH_HEAD
 	echo "</div>";
 }
 
