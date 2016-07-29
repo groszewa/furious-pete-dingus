@@ -1,9 +1,8 @@
 <?php
 
 function createLocalItemList($minval,$maxval,$tableName) {
-
-
-
+    
+    // Set login parameters
 	$user = 'root';
 	$pass = '';
 	$search_db = 'item_search_db';
@@ -21,7 +20,6 @@ function createLocalItemList($minval,$maxval,$tableName) {
 	    printf("Connect failed: %s\n", $con_search->connect_error);
 	    exit();
 	}
-
 
 	//Select Proper table and narrow down results
 	//$sql_search_values = $con_search->query("SELECT * FROM `$rec` WHERE `Manufacturer`= 'LG'");
@@ -42,20 +40,84 @@ function createLocalItemList($minval,$maxval,$tableName) {
 	    $cached_results[] = $results;
 	}
 
+    // Close mysqli connection
+    mysqli_close($con_search);
+    
 	//print_r($cached_results);
 	//print(count($cached_results));
 	return $cached_results;
 
 }
 
-function getRandomItem($local_table){
-	$item = $local_table[rand(0,count($local_table)-1)];
+function displayResult($table_name,$item){
 	$price = $item['Price'];
+    
 	echo "<div>";
-	echo "	<a href=" . $item['DetailPageURL'] . ">". $item['Title'] ."</a> <br>";
-	echo "	<img src=" . $item['ImageURL'] . " height='100' width='100'>";
+    // Display link and attach click counter
+	echo "	<a href=" . $item['DetailPageURL'] . " id='product_link'>". $item['Title'] ."</a> <br>";
+    
+    $id = $item['Id'];
+    
+	echo "	<img src=" . $item['ImageURL'] . " id='product_image' height='100' width='100'>";
+    
+echo '<script type="text/javascript"> ';
+    echo 'document.getElementById("product_link").onclick = function(){increment_clicks_func()};';
+    echo 'document.getElementById("product_image").onclick = function(){increment_clicks_func()};';
+echo '</script>';    
+    
+    
+        echo '<script type="text/javascript">';
+            echo 'function increment_clicks_func(){';
+                echo '$.ajax({';
+                    echo 'url: "php/incrementClicks.php",';
+                    echo 'type: "POST",';
+                    echo "data: { id : '$id' , table_name : '$table_name' },";
+                    echo 'success: function(msg){';
+                    echo '}';
+                echo '});';
+            echo '};';
+        echo '</script>';
+    	//echo '<img src="http://i.imgur.com/QZMFqy2.jpg" onclick="increment_clicks_func()" height="100" width="100">';
+    
 	echo "	<p>" . $item['Price']/100 . "</p>";
+    echo "  <p>" . $item['Id'] . "</p>";
 	echo "</div>";
+}
+
+function getRandomResult($local_table){
+    return $local_table[rand(0,count($local_table)-1)];
+}
+
+function getFitnessProportionateSelection($local_table){
+    // Need to get:
+    // Id
+    // Weights
+    
+    // Get the max
+    $max = 0;
+    
+    foreach ($local_table as $item) {
+        $max += $item['WeightImpClicks'];
+    }
+    
+    $pick = rand(0,$max);
+    $selected_item = null;  
+    $current = 0;
+    
+    // Build key value pairs: Id => WeightImpClicks
+    foreach ($local_table as $item) {
+        $id = $item['Id'];
+        $weight = $item['WeightImpClicks'];
+        $current += $weight;
+        if ($current > $pick) {
+            $selected_item = $item;
+            
+            break;
+        }
+    }
+    
+    return $item;
+    
 }
 
 function processInputs($name_input,$range_input){
@@ -108,7 +170,55 @@ function processInputs($name_input,$range_input){
 
 }
 
+function incrementImpressions($table_name,$item) {
+    
+    // Set login parameters
+	$user = 'root';
+	$pass = '';
+	$search_db = 'item_search_db';
 
+	// Create connection
+	$con_search = new mysqli('localhost',$user,$pass,$search_db);
+
+	// Check connection
+	if ($con_search->connect_errno) {
+	    printf("Connect failed: %s\n", $con_search->connect_error);
+	    exit();
+	}
+
+    $id = $item['Id'];
+    //echo $id;
+    
+    // Find row with Id and increment Impressions value
+    // NOTE: Use back tick around column names
+    $con_search->query("UPDATE `$table_name` SET `Impressions` = `Impressions` + 1 WHERE `Id` = '$id'");
+    
+    mysqli_close($con_search);
+        
+}
+
+/*
+function incrementClicks($table_name,$item) {
+    // Set login parameters
+	$user = 'root';
+	$pass = '';
+	$search_db = 'item_search_db';
+
+	// Create connection
+	$con_search = new mysqli('localhost',$user,$pass,$search_db);
+
+	// Check connection
+	if ($con_search->connect_errno) {
+	    printf("Connect failed: %s\n", $con_search->connect_error);
+	    exit();
+	}
+
+    // Find row with Id and increment Clicks value
+    // NOTE: Use back tick around column names
+    $con_search->query("UPDATE `$table_name` SET `Clicks` = `Clicks` + 1 WHERE `Id` = '$id'");
+    
+}
+*/
 
 
 ?>

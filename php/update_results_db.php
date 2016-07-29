@@ -8,11 +8,29 @@
 
 include('amazon_scripts.php'); 
 
-$user = 'goodeno4_mblock';
-$pass = 'mysql%akQZGDy4$';
-$search_db = 'gooden4_item_search_db';
-$search_table = 'hipster_search_table';
-$results_table = 'hipster_results_table';
+if (php_sapi_name() == 'cli') {
+    $args = $_SERVER['argv'];
+} else {
+    parse_str($_SERVER['QUERY_STRING'], $args);
+}
+
+//$table_root = $args[1];
+
+$table_root = "sister";
+
+echo "argv0 = " . $argv[0] . "\n";
+
+//$user = 'goodeno4_mblock';
+//$pass = 'mysql%akQZGDy4$';
+$user = 'root';
+$pass = '';
+
+//$search_db = 'goodeno4_item_search_db';
+$search_db = 'item_search_db';
+$search_table = $table_root . "_search_table";
+$results_table = $table_root . "_results_table";
+
+print $search_table . " " . $results_table . "\n";
 
 // Set timezone
 date_default_timezone_set('America/Los_Angeles');
@@ -40,6 +58,8 @@ if (!$sql_itemsearch_params) { // add this check.
 
 // ------------------- Main Loop ----------------------
 
+$search_id = 1;
+
 while($search_values = $sql_itemsearch_params->fetch_array(MYSQL_NUM)){
     $params = clean_itemsearch_params($search_values, $column_names);   // Clean up our params before sending them to URL generator
     $request = amazon_get_signed_url($params);                          // Generate item search URL
@@ -51,14 +71,14 @@ while($search_values = $sql_itemsearch_params->fetch_array(MYSQL_NUM)){
     
     $parsed_xml = simplexml_load_string($response);
     
-    update_results_table($con_search, $results_table, $parsed_xml);
+    update_results_table($con_search, $results_table, $parsed_xml, $search_id);
     
     if (isset($parsed_xml->Items->TotalPages)) {
         $total_pages = $con_search->real_escape_string((string)$parsed_xml->Items->TotalPages);
         print "Total pages = " . $total_pages . "<br>";
     }
     
-    if ($total_pages > 10) $total_pages = 10;
+    if ($total_pages > 5) $total_pages = 5;
     
     if ($total_pages > 1) {
         for ($i = 2; $i < $total_pages; $i++) {
@@ -70,10 +90,16 @@ while($search_values = $sql_itemsearch_params->fetch_array(MYSQL_NUM)){
             //usleep(1000*rand(0,4*100));
                 
             $parsed_xml = simplexml_load_string($response);
-            update_results_table($con_search, $results_table, $parsed_xml);
+            update_results_table($con_search, $results_table, $parsed_xml, $search_id);
         }
     }   
+    
+    $search_id++;
 }
+
+// Close connection
+mysqli_close($con_search);
+
 
 //////////////////////////////////////
 //                                  //
@@ -145,11 +171,12 @@ function get_php_column_names($con, $db_name, $table_name) {
     return $column_names;
 }
 
-function update_results_table($con, $table_name, $parsed_xml) {
+function update_results_table($con, $table_name, $parsed_xml, $search_id) {
     // Parse xml into PHP array
     $numOfItems = $parsed_xml->Items->TotalResults;
     $item_results_array = array(
         'Id' => 0,
+        'SearchId' => "",
         'Actor' => "",
         'Artist' => "",
         'Author' => "",
@@ -161,10 +188,14 @@ function update_results_table($con, $table_name, $parsed_xml) {
         'Title' => "",
         'Price' => 0,
         'ImageURL' => "",
-        'LastUpdated' => "");
+        'LastUpdated' => "",
+        'Impressions' => 2,
+        'Clicks' => 1,
+        'WeightImpClicks' => 50
+    );
 
     // print_r($results_array);
-
+    
     if($numOfItems > 0){
         foreach($parsed_xml->Items->Item as $current){
             foreach($item_results_array as $entry=>$value){
@@ -174,6 +205,8 @@ function update_results_table($con, $table_name, $parsed_xml) {
                     $item_results_array[$entry] = $con->real_escape_string((string)$current->ItemAttributes->$entry);   
                 }            
             }
+        
+            $item_results_array['SearchId'] = $search_id;
             
             if (isset($current->ASIN)) {
                 $item_results_array['ASIN'] = $con->real_escape_string((string)$current->ASIN);
@@ -195,7 +228,7 @@ function update_results_table($con, $table_name, $parsed_xml) {
             
             // Insert results into MySQL table
             $sql = sprintf(
-                'INSERT INTO hipster_results_table (%s) VALUES ("%s")',
+                'INSERT INTO sister_results_table (%s) VALUES ("%s")',
                 implode(',',array_keys($item_results_array)),
                 implode('","',array_values($item_results_array))
             );
